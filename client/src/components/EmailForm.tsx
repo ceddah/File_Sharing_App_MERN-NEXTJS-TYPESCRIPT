@@ -6,6 +6,7 @@ const EmailForm: React.FC<{ id: string }> = ({ id }) => {
     emailFrom: "",
     emailTo: "",
   });
+  const [isSent, setIsSent] = useState(false);
   const [message, setMessage] = useState(null);
 
   const handleSetEmails = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,11 +24,12 @@ const EmailForm: React.FC<{ id: string }> = ({ id }) => {
         url: "api/files/email",
         data: {
           id,
-          emailForm: emails.emailFrom,
+          emailFrom: emails.emailFrom,
           emailTo: emails.emailTo,
         },
       });
       setMessage(data.message);
+      setIsSent(true);
     } catch (error) {
       setMessage(error.data.response.message);
     }
@@ -58,7 +60,7 @@ const EmailForm: React.FC<{ id: string }> = ({ id }) => {
           onChange={handleSetEmails}
           required
         />
-        <button className="button" type="submit">
+        <button className="button" type="submit" disabled={isSent}>
           Send Email
         </button>
       </form>
